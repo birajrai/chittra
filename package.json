@@ -1,0 +1,17 @@
+{
+    "name": "chittra",
+    "version": "1.0.0",
+    "description": "High-performance placeholder image generator",
+    "main": "chittra.js",
+    "type": "commonjs",
+    "scripts": {
+        "start": "node chittra.js"
+    },
+    "dependencies": {
+        "async-sema": "^3.1.1",
+        "express": "^4.19.2",
+        "lru-cache": "^10.2.0",
+        "node-fetch": "^3.3.2",
+        "sharp": "^0.33.2"
+    }
+}
