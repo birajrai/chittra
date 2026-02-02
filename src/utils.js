@@ -158,10 +158,16 @@ export function getContentType(format) {
 }
 
 /**
- * Get base URL from request
- * @param {Request} req - Express request object
- * @returns {string} Base URL (protocol + host)
+ * Get base URL - uses config.BASE_URL in production, or auto-detects from request
+ * @param {Request} req - Express request object (optional)
+ * @returns {string} Base URL
  */
 export function getBaseUrl(req) {
+    // In production, use configured BASE_URL
+    if (process.env.NODE_ENV === 'production' || !req) {
+        return config.BASE_URL;
+    }
+    
+    // In development, auto-detect from request
     return `${req.protocol}://${req.get('host')}`;
 }

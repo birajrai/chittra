@@ -8,6 +8,9 @@ const config = {
     PORT: parseInt(process.env.PORT || process.env.CHITTRA_PORT, 10) || 3000,
     HOST: process.env.HOST || process.env.CHITTRA_HOST || '0.0.0.0',
 
+    // Base URL (production URL or auto-detect from request)
+    BASE_URL: process.env.CHITTRA_BASE_URL || process.env.BASE_URL || 'https://chittra.bishestamedia.com.np',
+
     // Image constraints
     MIN_SIZE: parseInt(process.env.CHITTRA_MIN_SIZE, 10) || 10,
     MAX_SIZE: parseInt(process.env.CHITTRA_MAX_SIZE, 10) || 4000,

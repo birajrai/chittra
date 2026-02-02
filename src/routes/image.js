@@ -80,7 +80,7 @@ router.get('/:size/:p2?/:p3?/:p4?', async (req, res, next) => {
     if (cache.has(cacheKey)) {
         const cached = cache.get(cacheKey);
         setCacheHeaders(res, true);
-        return res.send(cached);
+        return res.type(cached.contentType).send(cached.data);
     }
 
     try {
@@ -111,16 +111,18 @@ router.get('/:size/:p2?/:p3?/:p4?', async (req, res, next) => {
         // Generate SVG (fast path)
         if (format === 'svg') {
             const svg = generateSvg(options);
-            cache.set(cacheKey, svg);
-            return res.type('image/svg+xml').send(svg);
+            const contentType = 'image/svg+xml';
+            cache.set(cacheKey, { data: svg, contentType });
+            return res.type(contentType).send(svg);
         }
 
         // Generate raster image (requires semaphore for concurrency control)
         await sema.acquire();
         try {
             const buffer = await renderRaster(options, format);
-            cache.set(cacheKey, buffer);
-            res.type(getContentType(format)).send(buffer);
+            const contentType = getContentType(format);
+            cache.set(cacheKey, { data: buffer, contentType });
+            res.type(contentType).send(buffer);
         } finally {
             sema.release();
         }
