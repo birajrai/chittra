@@ -135,6 +135,7 @@ export function normalizeColor(color, fallback = '#555555') {
 
 /**
  * Parse format from path segment or extension
+ * DRY: Uses config.FORMAT_ALIASES as single source of truth
  * @param {string} input - Format string (may include extension)
  * @returns {string} Normalized format
  */
@@ -143,15 +144,24 @@ export function parseFormat(input) {
 
     const format = input.toLowerCase().replace(/^\./, '');
 
-    // Map common aliases
-    const formatMap = {
-        jpg: 'jpeg',
-        jpeg: 'jpeg',
-        png: 'png',
-        webp: 'webp',
-        avif: 'avif',
-        svg: 'svg',
-    };
+    return config.FORMAT_ALIASES[format] || 'svg';
+}
 
-    return formatMap[format] || 'svg';
+/**
+ * Get content type for format
+ * DRY: Uses config.FORMAT_MIME_TYPES as single source of truth
+ * @param {string} format - Image format
+ * @returns {string} MIME type
+ */
+export function getContentType(format) {
+    return config.FORMAT_MIME_TYPES[format] || 'image/png';
+}
+
+/**
+ * Get base URL from request
+ * @param {Request} req - Express request object
+ * @returns {string} Base URL (protocol + host)
+ */
+export function getBaseUrl(req) {
+    return `${req.protocol}://${req.get('host')}`;
 }

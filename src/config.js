@@ -31,6 +31,26 @@ const config = {
 
     // Supported formats
     SUPPORTED_FORMATS: ['svg', 'png', 'webp', 'jpeg', 'jpg', 'avif'],
+
+    // Format to MIME type mapping (DRY: single source of truth)
+    FORMAT_MIME_TYPES: {
+        svg: 'image/svg+xml',
+        png: 'image/png',
+        webp: 'image/webp',
+        jpeg: 'image/jpeg',
+        jpg: 'image/jpeg',
+        avif: 'image/avif',
+    },
+
+    // Format aliases (normalize jpg -> jpeg, etc.)
+    FORMAT_ALIASES: {
+        jpg: 'jpeg',
+        jpeg: 'jpeg',
+        png: 'png',
+        webp: 'webp',
+        avif: 'avif',
+        svg: 'svg',
+    },
 };
 
 export default config;

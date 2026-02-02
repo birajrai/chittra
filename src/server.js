@@ -3,29 +3,33 @@
  */
 
 import express from 'express';
-import { Sema } from 'async-sema';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 import config from './config.js';
-import cache from './cache.js';
-import renderRaster, { getContentType } from './render.js';
-import generateSvg from './svg.js';
-import { parseSize, normalizeText, normalizeColor, parseFormat } from './utils.js';
-import { getAvailableFonts } from './fonts.js';
 
+// Middleware
+import { corsMiddleware, errorHandler, notFoundHandler } from './middleware/index.js';
+
+// Routes
+import { healthRoutes, pageRoutes, imageRoutes } from './routes/index.js';
+
+// Directory setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.join(__dirname, '..');
-
 const TMP_DIR = path.join(ROOT_DIR, 'tmp');
+
+// Ensure tmp directory exists
 if (!fs.existsSync(TMP_DIR)) {
     fs.mkdirSync(TMP_DIR, { recursive: true });
 }
 
-const sema = new Sema(config.CONCURRENCY);
-
+/**
+ * Cleanup temporary directory
+ * Removes files older than CLEANUP_MAX_AGE
+ */
 function cleanupTmpDir() {
     const cutoff = Date.now() - config.CLEANUP_MAX_AGE;
     fs.readdir(TMP_DIR, (err, files) => {
@@ -43,121 +47,54 @@ function cleanupTmpDir() {
     });
 }
 
+// Initial cleanup and schedule periodic cleanup
 cleanupTmpDir();
 setInterval(cleanupTmpDir, config.CLEANUP_INTERVAL);
 
+// Create Express app
 const app = express();
 
 // View engine setup
 app.set('view engine', 'ejs');
 app.set('views', path.join(ROOT_DIR, 'views'));
 
+// Security settings
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
-// Helper to get base URL
-function getBaseUrl(req) {
-    return `${req.protocol}://${req.get('host')}`;
-}
+// =====================
+// MIDDLEWARE
+// =====================
 
-// Health check
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok', cache: cache.stats(), uptime: process.uptime() });
-});
+// CORS - Allow all origins
+app.use(corsMiddleware);
 
-// Documentation page
-app.get('/docs', (req, res) => {
-    res.render('docs', {
-        baseUrl: getBaseUrl(req),
-        fonts: getAvailableFonts(),
-        config
-    });
-});
+// =====================
+// ROUTES
+// =====================
 
-// Homepage
-app.get('/', (req, res) => {
-    res.render('home', {
-        baseUrl: getBaseUrl(req)
-    });
-});
+// Health check (must be before other routes)
+app.use(healthRoutes);
 
-// Image generation route
-app.get('/:size/:p2?/:p3?/:p4?', async (req, res) => {
-    const cacheKey = req.originalUrl;
+// Page routes (home, docs)
+app.use(pageRoutes);
 
-    if (cache.has(cacheKey)) {
-        const cached = cache.get(cacheKey);
-        res.set('Cache-Control', 'public, max-age=31536000, immutable');
-        res.set('X-Cache', 'HIT');
-        return res.send(cached);
-    }
+// Image generation routes (catch-all for image patterns)
+app.use(imageRoutes);
 
-    try {
-        const { size, p2, p3, p4 } = req.params;
-        const { text, font } = req.query;
+// =====================
+// ERROR HANDLING
+// =====================
 
-        const { width, height } = parseSize(size);
+// 404 handler (for unmatched routes)
+app.use(notFoundHandler);
 
-        let bg = config.DEFAULT_BG;
-        let color = config.DEFAULT_COLOR;
-        let format = 'svg';
+// Global error handler
+app.use(errorHandler);
 
-        const formats = config.SUPPORTED_FORMATS;
-
-        if (p2 && formats.includes(p2.toLowerCase())) {
-            format = parseFormat(p2);
-        } else if (p2) {
-            bg = normalizeColor(p2, config.DEFAULT_BG);
-
-            if (p3 && formats.includes(p3.toLowerCase())) {
-                format = parseFormat(p3);
-            } else if (p3) {
-                color = normalizeColor(p3, config.DEFAULT_COLOR);
-
-                if (p4) {
-                    format = parseFormat(p4);
-                }
-            }
-        }
-
-        const sizeFormatMatch = size.match(/\.(svg|png|jpe?g|webp|avif)$/i);
-        if (sizeFormatMatch) {
-            format = parseFormat(sizeFormatMatch[1]);
-        }
-
-        const label = normalizeText(text, width, height);
-
-        const options = {
-            width,
-            height,
-            bg,
-            color,
-            text: label,
-            font: font || config.DEFAULT_FONT,
-        };
-
-        res.set('Cache-Control', 'public, max-age=31536000, immutable');
-        res.set('X-Cache', 'MISS');
-
-        if (format === 'svg') {
-            const svg = generateSvg(options);
-            cache.set(cacheKey, svg);
-            return res.type('image/svg+xml').send(svg);
-        }
-
-        await sema.acquire();
-        try {
-            const buffer = await renderRaster(options, format);
-            cache.set(cacheKey, buffer);
-            res.type(getContentType(format)).send(buffer);
-        } finally {
-            sema.release();
-        }
-    } catch (err) {
-        console.error('Error:', err.message);
-        res.status(400).json({ error: 'Invalid request' });
-    }
-});
+// =====================
+// SERVER START
+// =====================
 
 export function startServer() {
     app.listen(config.PORT, config.HOST, () => {

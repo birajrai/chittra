@@ -4,6 +4,17 @@
 
 import sharp from 'sharp';
 import generateSvg from './svg.js';
+import config from './config.js';
+
+/**
+ * Get content type for format
+ * DRY: Uses config.FORMAT_MIME_TYPES as single source of truth
+ * @param {string} format - Image format
+ * @returns {string} MIME type
+ */
+export function getContentType(format) {
+    return config.FORMAT_MIME_TYPES[format] || 'image/png';
+}
 
 /**
  * Render SVG to raster format (PNG, WebP, JPEG, AVIF)
@@ -61,21 +72,4 @@ export default async function renderRaster(options, format) {
     }
 
     return pipeline.toBuffer();
-}
-
-/**
- * Get content type for format
- * @param {string} format - Image format
- * @returns {string} MIME type
- */
-export function getContentType(format) {
-    const types = {
-        svg: 'image/svg+xml',
-        png: 'image/png',
-        webp: 'image/webp',
-        jpeg: 'image/jpeg',
-        jpg: 'image/jpeg',
-        avif: 'image/avif',
-    };
-    return types[format] || 'image/png';
 }
