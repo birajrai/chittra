@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     PORT: 10000,
     MIN_SIZE: 10,
     MAX_SIZE: 4000,
