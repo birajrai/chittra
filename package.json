@@ -1,17 +1,42 @@
 {
     "name": "chittra",
-    "version": "1.0.0",
-    "description": "High-performance placeholder image generator",
-    "main": "chittra.mjs",
+    "version": "2.0.0",
+    "description": "High-performance placeholder image generator with support for SVG, PNG, WebP, JPEG, AVIF formats",
+    "author": "Biraj Rai",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/birajrai/chittra.git"
+    },
+    "homepage": "https://github.com/birajrai/chittra",
+    "bugs": {
+        "url": "https://github.com/birajrai/chittra/issues"
+    },
+    "keywords": [
+        "placeholder",
+        "image",
+        "generator",
+        "svg",
+        "png",
+        "webp",
+        "avif",
+        "sharp"
+    ],
+    "main": "index.js",
     "type": "module",
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "scripts": {
-        "start": "bun chittra.mjs"
+        "start": "node index.js",
+        "dev": "node --watch index.js",
+        "bun": "bun index.js",
+        "bun:dev": "bun --watch index.js"
     },
     "dependencies": {
         "async-sema": "^3.1.1",
         "express": "^4.19.2",
         "lru-cache": "^10.2.0",
-        "node-fetch": "^3.3.2",
         "sharp": "^0.33.2"
     }
 }
