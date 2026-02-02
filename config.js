@@ -1,5 +1,5 @@
 module.exports = {
-    PORT: 3000,
+    PORT: 10000,
     MIN_SIZE: 10,
     MAX_SIZE: 4000,
     CACHE_TTL: 1000 * 60 * 60,
