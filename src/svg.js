@@ -16,6 +16,8 @@ export default function generateSvg({ width, height, bg, color, text, font }) {
     const fontConfig = getFont(font);
     const fontSize = Math.max(12, Math.min(width, height) / 8);
     const safeText = escapeXml(text);
+    // Escape & to &amp; for XML validity in SVG
+    const safeFontUrl = fontConfig.url.replace(/&/g, '&amp;');
 
     // Handle multi-line text
     const lines = safeText.split('\n');
@@ -33,7 +35,7 @@ export default function generateSvg({ width, height, bg, color, text, font }) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <defs>
     <style>
-      @import url('${fontConfig.url}');
+      @import url('${safeFontUrl}');
       .text {
         font-family: '${fontConfig.family}', system-ui, sans-serif;
         font-size: ${fontSize}px;
