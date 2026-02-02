@@ -1,0 +1,27 @@
+<% /* Data Table Partial - Parameters: headers (array), rows (array of arrays), className (optional) */ %>
+<div class="bg-white rounded-lg border border-gray-200 overflow-hidden <%= typeof className !== 'undefined' ? className : '' %>">
+    <table class="w-full text-sm">
+        <thead class="bg-gray-50">
+            <tr>
+                <% headers.forEach(function(header) { %>
+                <th class="text-left py-3 px-4 font-medium"><%= header %></th>
+                <% }); %>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            <% rows.forEach(function(row) { %>
+            <tr>
+                <% row.forEach(function(cell) { %>
+                <% if (typeof cell === 'object' && cell !== null && cell.html) { %>
+                <td class="py-3 px-4 <%= cell.class || '' %>"><%- cell.html %></td>
+                <% } else if (typeof cell === 'object' && cell !== null) { %>
+                <td class="py-3 px-4 <%= cell.class || '' %>"><%= cell.value %></td>
+                <% } else { %>
+                <td class="py-3 px-4 text-gray-600"><%= cell %></td>
+                <% } %>
+                <% }); %>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>

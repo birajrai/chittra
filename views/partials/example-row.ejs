@@ -1,0 +1,19 @@
+<% /* Example Row Partial - Parameters: baseUrl, title, imgSrc, displayUrl, copyUrl, imgWidth (optional), imgHeight (optional), transparent (optional) */ %>
+<div class="bg-white rounded-lg border border-gray-200 p-4">
+    <div class="flex items-start gap-4">
+        <% if (typeof transparent !== 'undefined' && transparent) { %>
+        <div class="rounded border border-gray-100" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 10px 10px">
+            <img src="<%= imgSrc %>" alt="<%= title %>" class="rounded <%= typeof imgWidth !== 'undefined' ? imgWidth : '' %> <%= typeof imgHeight !== 'undefined' ? imgHeight : '' %>">
+        </div>
+        <% } else { %>
+        <img src="<%= imgSrc %>" alt="<%= title %>" class="rounded border border-gray-100 <%= typeof imgWidth !== 'undefined' ? imgWidth : '' %> <%= typeof imgHeight !== 'undefined' ? imgHeight : '' %>">
+        <% } %>
+        <div class="flex-1 min-w-0">
+            <p class="font-medium mb-1"><%= title %></p>
+            <div class="flex items-center gap-2">
+                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= displayUrl %></code>
+                <button onclick="copy('<%= copyUrl %>')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
+            </div>
+        </div>
+    </div>
+</div>

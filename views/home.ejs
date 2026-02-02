@@ -22,83 +22,53 @@
             <h2 class="text-lg font-semibold mb-4">Examples</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/200x120" alt="Basic" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">Basic</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/600x400</code>
-                            <button onclick="copy('<%= baseUrl %>/600x400')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'Basic', 
+                    imgSrc: baseUrl + '/200x120', 
+                    displayPath: '/600x400', 
+                    copyUrl: baseUrl + '/600x400' 
+                }) %>
 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/120" alt="Square" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">Square</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/400</code>
-                            <button onclick="copy('<%= baseUrl %>/400')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'Square', 
+                    imgSrc: baseUrl + '/120', 
+                    displayPath: '/400', 
+                    copyUrl: baseUrl + '/400' 
+                }) %>
 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/200x120/3b82f6/ffffff" alt="Colors" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">Custom Colors</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/600x400/3b82f6/fff</code>
-                            <button onclick="copy('<%= baseUrl %>/600x400/3b82f6/ffffff')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'Custom Colors', 
+                    imgSrc: baseUrl + '/200x120/3b82f6/ffffff', 
+                    displayPath: '/600x400/3b82f6/fff', 
+                    copyUrl: baseUrl + '/600x400/3b82f6/ffffff' 
+                }) %>
 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/200x120?text=Hello" alt="Text" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">Custom Text</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/600x400?text=Hello</code>
-                            <button onclick="copy('<%= baseUrl %>/600x400?text=Hello')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'Custom Text', 
+                    imgSrc: baseUrl + '/200x120?text=Hello', 
+                    displayPath: '/600x400?text=Hello', 
+                    copyUrl: baseUrl + '/600x400?text=Hello' 
+                }) %>
 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/200x120/png" alt="PNG" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">PNG Format</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/600x400/png</code>
-                            <button onclick="copy('<%= baseUrl %>/600x400/png')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'PNG Format', 
+                    imgSrc: baseUrl + '/200x120/png', 
+                    displayPath: '/600x400/png', 
+                    copyUrl: baseUrl + '/600x400/png' 
+                }) %>
 
-                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-100 p-4 flex items-center justify-center h-32">
-                        <img src="<%= baseUrl %>/200x120/1f2937/f3f4f6?font=poppins" alt="Font" class="max-h-full rounded">
-                    </div>
-                    <div class="p-3 border-t border-gray-100">
-                        <p class="text-xs text-gray-500 mb-2">Custom Font</p>
-                        <div class="flex items-center gap-2">
-                            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate">/600x400?font=poppins</code>
-                            <button onclick="copy('<%= baseUrl %>/600x400?font=poppins')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-card', { 
+                    baseUrl, 
+                    title: 'Custom Font', 
+                    imgSrc: baseUrl + '/200x120/1f2937/f3f4f6?font=poppins', 
+                    displayPath: '/600x400?font=poppins', 
+                    copyUrl: baseUrl + '/600x400?font=poppins' 
+                }) %>
 
             </div>
         </section>

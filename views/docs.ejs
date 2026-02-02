@@ -27,9 +27,7 @@
         <section id="getting-started" class="mb-10">
             <h2 class="text-xl font-semibold mb-4">Getting Started</h2>
             <p class="text-gray-600 mb-4">Generate a placeholder image by constructing a URL with your desired dimensions:</p>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4">
-                <code class="text-green-400"><%= baseUrl %>/600x400</code>
-            </div>
+            <%- include('partials/code-block', { code: baseUrl + '/600x400' }) %>
             <p class="text-gray-600">This returns an SVG image with dimensions 600x400 pixels.</p>
         </section>
 
@@ -41,49 +39,17 @@
             </div>
             <p class="text-gray-600 mb-4">All parameters except <code class="bg-gray-100 px-1 rounded">size</code> are optional.</p>
             
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Part</th>
-                            <th class="text-left py-3 px-4 font-medium">Required</th>
-                            <th class="text-left py-3 px-4 font-medium">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-yellow-600">size</code></td>
-                            <td class="py-3 px-4"><span class="text-green-600">Yes</span></td>
-                            <td class="py-3 px-4 text-gray-600">Image dimensions</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-blue-600">background</code></td>
-                            <td class="py-3 px-4"><span class="text-gray-400">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Background color (default: #eeeeee)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-pink-600">textColor</code></td>
-                            <td class="py-3 px-4"><span class="text-gray-400">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Text color (default: #555555)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-green-600">format</code></td>
-                            <td class="py-3 px-4"><span class="text-gray-400">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Output format (default: svg)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-purple-600">?text</code></td>
-                            <td class="py-3 px-4"><span class="text-gray-400">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Custom display text</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code class="text-purple-600">?font</code></td>
-                            <td class="py-3 px-4"><span class="text-gray-400">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Font family (default: lato)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Part', 'Required', 'Description'],
+                rows: [
+                    [{ html: '<code class="text-yellow-600">size</code>' }, { html: '<span class="text-green-600">Yes</span>' }, 'Image dimensions'],
+                    [{ html: '<code class="text-blue-600">background</code>' }, { html: '<span class="text-gray-400">No</span>' }, 'Background color (default: #eeeeee)'],
+                    [{ html: '<code class="text-pink-600">textColor</code>' }, { html: '<span class="text-gray-400">No</span>' }, 'Text color (default: #555555)'],
+                    [{ html: '<code class="text-green-600">format</code>' }, { html: '<span class="text-gray-400">No</span>' }, 'Output format (default: svg)'],
+                    [{ html: '<code class="text-purple-600">?text</code>' }, { html: '<span class="text-gray-400">No</span>' }, 'Custom display text'],
+                    [{ html: '<code class="text-purple-600">?font</code>' }, { html: '<span class="text-gray-400">No</span>' }, 'Font family (default: lato)']
+                ]
+            }) %>
         </section>
 
         <!-- Parameters -->
@@ -92,46 +58,21 @@
             
             <h3 class="font-semibold mt-6 mb-3">Size</h3>
             <p class="text-gray-600 mb-3">Specify dimensions in pixels. Supports multiple formats:</p>
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden mb-4">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Format</th>
-                            <th class="text-left py-3 px-4 font-medium">Example</th>
-                            <th class="text-left py-3 px-4 font-medium">Result</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Width x Height</td>
-                            <td class="py-3 px-4"><code>600x400</code></td>
-                            <td class="py-3 px-4 text-gray-600">600px wide, 400px tall</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Square</td>
-                            <td class="py-3 px-4"><code>400</code></td>
-                            <td class="py-3 px-4 text-gray-600">400px x 400px</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Retina (@2x)</td>
-                            <td class="py-3 px-4"><code>600x400@2x</code></td>
-                            <td class="py-3 px-4 text-gray-600">1200px x 800px</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Retina (@3x)</td>
-                            <td class="py-3 px-4"><code>400@3x</code></td>
-                            <td class="py-3 px-4 text-gray-600">1200px x 1200px</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Format', 'Example', 'Result'],
+                rows: [
+                    ['Width x Height', { html: '<code>600x400</code>' }, '600px wide, 400px tall'],
+                    ['Square', { html: '<code>400</code>' }, '400px x 400px'],
+                    ['Retina (@2x)', { html: '<code>600x400@2x</code>' }, '1200px x 800px'],
+                    ['Retina (@3x)', { html: '<code>400@3x</code>' }, '1200px x 1200px']
+                ],
+                className: 'mb-4'
+            }) %>
             <p class="text-sm text-gray-500">Min: <%= config.MIN_SIZE %>px | Max: <%= config.MAX_SIZE %>px | Max scale: @<%= config.MAX_SCALE %>x</p>
 
             <h3 class="font-semibold mt-6 mb-3">Text</h3>
             <p class="text-gray-600 mb-3">Custom text displayed on the image. Use query parameter:</p>
-            <div class="bg-gray-900 rounded-lg p-4 mb-3">
-                <code class="text-green-400"><%= baseUrl %>/600x400?text=Hello+World</code>
-            </div>
+            <%- include('partials/code-block', { code: baseUrl + '/600x400?text=Hello+World' }) %>
             <ul class="text-sm text-gray-600 space-y-1">
                 <li>Use <code class="bg-gray-100 px-1 rounded">+</code> or <code class="bg-gray-100 px-1 rounded">%20</code> for spaces</li>
                 <li>Use <code class="bg-gray-100 px-1 rounded">\n</code> for line breaks</li>
@@ -142,50 +83,16 @@
         <!-- Formats -->
         <section id="formats" class="mb-10">
             <h2 class="text-xl font-semibold mb-4">Output Formats</h2>
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Format</th>
-                            <th class="text-left py-3 px-4 font-medium">Usage</th>
-                            <th class="text-left py-3 px-4 font-medium">Transparency</th>
-                            <th class="text-left py-3 px-4 font-medium">Best For</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4 font-medium">SVG</td>
-                            <td class="py-3 px-4"><code>/600x400</code> <span class="text-gray-400">(default)</span></td>
-                            <td class="py-3 px-4"><span class="text-green-600">Yes</span></td>
-                            <td class="py-3 px-4 text-gray-600">Scalable, smallest size</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-medium">PNG</td>
-                            <td class="py-3 px-4"><code>/600x400/png</code></td>
-                            <td class="py-3 px-4"><span class="text-green-600">Yes</span></td>
-                            <td class="py-3 px-4 text-gray-600">Lossless, wide support</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-medium">WebP</td>
-                            <td class="py-3 px-4"><code>/600x400/webp</code></td>
-                            <td class="py-3 px-4"><span class="text-green-600">Yes</span></td>
-                            <td class="py-3 px-4 text-gray-600">Modern browsers, good compression</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-medium">JPEG</td>
-                            <td class="py-3 px-4"><code>/600x400/jpeg</code></td>
-                            <td class="py-3 px-4"><span class="text-red-600">No</span></td>
-                            <td class="py-3 px-4 text-gray-600">Photos, legacy support</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 font-medium">AVIF</td>
-                            <td class="py-3 px-4"><code>/600x400/avif</code></td>
-                            <td class="py-3 px-4"><span class="text-green-600">Yes</span></td>
-                            <td class="py-3 px-4 text-gray-600">Best compression, newer browsers</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Format', 'Usage', 'Transparency', 'Best For'],
+                rows: [
+                    [{ value: 'SVG', class: 'font-medium' }, { html: '<code>/600x400</code> <span class="text-gray-400">(default)</span>' }, { html: '<span class="text-green-600">Yes</span>' }, 'Scalable, smallest size'],
+                    [{ value: 'PNG', class: 'font-medium' }, { html: '<code>/600x400/png</code>' }, { html: '<span class="text-green-600">Yes</span>' }, 'Lossless, wide support'],
+                    [{ value: 'WebP', class: 'font-medium' }, { html: '<code>/600x400/webp</code>' }, { html: '<span class="text-green-600">Yes</span>' }, 'Modern browsers, good compression'],
+                    [{ value: 'JPEG', class: 'font-medium' }, { html: '<code>/600x400/jpeg</code>' }, { html: '<span class="text-red-600">No</span>' }, 'Photos, legacy support'],
+                    [{ value: 'AVIF', class: 'font-medium' }, { html: '<code>/600x400/avif</code>' }, { html: '<span class="text-green-600">Yes</span>' }, 'Best compression, newer browsers']
+                ]
+            }) %>
         </section>
 
         <!-- Colors -->
@@ -193,39 +100,16 @@
             <h2 class="text-xl font-semibold mb-4">Colors</h2>
             <p class="text-gray-600 mb-4">Colors can be specified in multiple formats:</p>
             
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden mb-4">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Type</th>
-                            <th class="text-left py-3 px-4 font-medium">Example</th>
-                            <th class="text-left py-3 px-4 font-medium">URL</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Hex (6 digits)</td>
-                            <td class="py-3 px-4"><span class="inline-block w-4 h-4 rounded" style="background:#3b82f6"></span> <code>3b82f6</code></td>
-                            <td class="py-3 px-4"><code>/600x400/3b82f6/ffffff</code></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Hex (3 digits)</td>
-                            <td class="py-3 px-4"><span class="inline-block w-4 h-4 rounded" style="background:#f00"></span> <code>f00</code></td>
-                            <td class="py-3 px-4"><code>/600x400/f00/fff</code></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Named colors</td>
-                            <td class="py-3 px-4"><span class="inline-block w-4 h-4 rounded bg-blue-500"></span> <code>blue</code></td>
-                            <td class="py-3 px-4"><code>/600x400/blue/white</code></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4 text-gray-600">Transparent</td>
-                            <td class="py-3 px-4"><span class="inline-block w-4 h-4 rounded border border-gray-300" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 8px 8px"></span> <code>transparent</code></td>
-                            <td class="py-3 px-4"><code>/600x400/transparent/333/png</code></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Type', 'Example', 'URL'],
+                rows: [
+                    ['Hex (6 digits)', { html: '<span class="inline-block w-4 h-4 rounded" style="background:#3b82f6"></span> <code>3b82f6</code>' }, { html: '<code>/600x400/3b82f6/ffffff</code>' }],
+                    ['Hex (3 digits)', { html: '<span class="inline-block w-4 h-4 rounded" style="background:#f00"></span> <code>f00</code>' }, { html: '<code>/600x400/f00/fff</code>' }],
+                    ['Named colors', { html: '<span class="inline-block w-4 h-4 rounded bg-blue-500"></span> <code>blue</code>' }, { html: '<code>/600x400/blue/white</code>' }],
+                    ['Transparent', { html: '<span class="inline-block w-4 h-4 rounded border border-gray-300" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 8px 8px"></span> <code>transparent</code>' }, { html: '<code>/600x400/transparent/333/png</code>' }]
+                ],
+                className: 'mb-4'
+            }) %>
             
             <p class="text-sm text-gray-500">Supported named colors: black, white, red, green, blue, yellow, orange, purple, pink, cyan, gray, and more.</p>
         </section>
@@ -234,9 +118,7 @@
         <section id="fonts" class="mb-10">
             <h2 class="text-xl font-semibold mb-4">Fonts</h2>
             <p class="text-gray-600 mb-4">Use the <code class="bg-gray-100 px-1 rounded">font</code> query parameter to change the font:</p>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4">
-                <code class="text-green-400"><%= baseUrl %>/600x400?font=roboto</code>
-            </div>
+            <%- include('partials/code-block', { code: baseUrl + '/600x400?font=roboto' }) %>
             
             <h3 class="font-semibold mt-6 mb-3">Available Fonts</h3>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
@@ -253,111 +135,72 @@
             <h2 class="text-xl font-semibold mb-4">Examples</h2>
             
             <div class="space-y-4">
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/150x100" alt="Basic" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Basic placeholder</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Basic placeholder', 
+                    imgSrc: baseUrl + '/150x100', 
+                    displayUrl: baseUrl + '/600x400', 
+                    copyUrl: baseUrl + '/600x400' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/100" alt="Square" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Square image</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/400</code>
-                                <button onclick="copy('<%= baseUrl %>/400')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Square image', 
+                    imgSrc: baseUrl + '/100', 
+                    displayUrl: baseUrl + '/400', 
+                    copyUrl: baseUrl + '/400' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/150x100/3b82f6/ffffff" alt="Colors" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Custom colors</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400/3b82f6/ffffff</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400/3b82f6/ffffff')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Custom colors', 
+                    imgSrc: baseUrl + '/150x100/3b82f6/ffffff', 
+                    displayUrl: baseUrl + '/600x400/3b82f6/ffffff', 
+                    copyUrl: baseUrl + '/600x400/3b82f6/ffffff' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/150x100?text=Hello" alt="Text" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Custom text</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400?text=Hello+World</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400?text=Hello+World')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Custom text', 
+                    imgSrc: baseUrl + '/150x100?text=Hello', 
+                    displayUrl: baseUrl + '/600x400?text=Hello+World', 
+                    copyUrl: baseUrl + '/600x400?text=Hello+World' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/150x100/1f2937/f9fafb?font=poppins" alt="Font" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Custom font</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400?font=poppins</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400?font=poppins')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Custom font', 
+                    imgSrc: baseUrl + '/150x100/1f2937/f9fafb?font=poppins', 
+                    displayUrl: baseUrl + '/600x400?font=poppins', 
+                    copyUrl: baseUrl + '/600x400?font=poppins' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/150x100/png" alt="PNG" class="rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">PNG format</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400/png</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400/png')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'PNG format', 
+                    imgSrc: baseUrl + '/150x100/png', 
+                    displayUrl: baseUrl + '/600x400/png', 
+                    copyUrl: baseUrl + '/600x400/png' 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <div class="rounded border border-gray-100" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 10px 10px">
-                            <img src="<%= baseUrl %>/150x100/transparent/333/png" alt="Transparent" class="rounded">
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Transparent background</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400/transparent/333/png</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400/transparent/333/png')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Transparent background', 
+                    imgSrc: baseUrl + '/150x100/transparent/333/png', 
+                    displayUrl: baseUrl + '/600x400/transparent/333/png', 
+                    copyUrl: baseUrl + '/600x400/transparent/333/png',
+                    transparent: true 
+                }) %>
 
-                <div class="bg-white rounded-lg border border-gray-200 p-4">
-                    <div class="flex items-start gap-4">
-                        <img src="<%= baseUrl %>/100@2x" alt="Retina" class="w-[100px] h-[100px] rounded border border-gray-100">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium mb-1">Retina (2x scale)</p>
-                            <div class="flex items-center gap-2">
-                                <code class="text-sm bg-gray-50 px-2 py-1 rounded flex-1 truncate"><%= baseUrl %>/600x400@2x</code>
-                                <button onclick="copy('<%= baseUrl %>/600x400@2x')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium shrink-0">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <%- include('partials/example-row', { 
+                    baseUrl, 
+                    title: 'Retina (2x scale)', 
+                    imgSrc: baseUrl + '/100@2x', 
+                    displayUrl: baseUrl + '/600x400@2x', 
+                    copyUrl: baseUrl + '/600x400@2x',
+                    imgWidth: 'w-[100px]',
+                    imgHeight: 'h-[100px]'
+                }) %>
             </div>
         </section>
 
@@ -366,76 +209,34 @@
             <h2 class="text-xl font-semibold mb-4">HTML Usage</h2>
             
             <h3 class="font-semibold mt-6 mb-3">Basic Image</h3>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
-                <code class="text-green-400">&lt;img src="<%= baseUrl %>/600x400" alt="Placeholder"&gt;</code>
-            </div>
+            <%- include('partials/code-block', { code: '<img src="' + baseUrl + '/600x400" alt="Placeholder">' }) %>
 
             <h3 class="font-semibold mt-6 mb-3">Responsive with Retina</h3>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
-                <pre class="text-green-400">&lt;img 
-  src="<%= baseUrl %>/600x400" 
-  srcset="<%= baseUrl %>/600x400@2x 2x"
-  alt="Placeholder"&gt;</pre>
-            </div>
+            <%- include('partials/code-block', { code: '<img \n  src="' + baseUrl + '/600x400" \n  srcset="' + baseUrl + '/600x400@2x 2x"\n  alt="Placeholder">', multiline: true }) %>
 
             <h3 class="font-semibold mt-6 mb-3">CSS Background</h3>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
-                <pre class="text-green-400">.hero {
-  background-image: url('<%= baseUrl %>/1920x1080');
-  background-size: cover;
-}</pre>
-            </div>
+            <%- include('partials/code-block', { code: '.hero {\n  background-image: url(\'' + baseUrl + '/1920x1080\');\n  background-size: cover;\n}', multiline: true }) %>
 
             <h3 class="font-semibold mt-6 mb-3">Markdown</h3>
-            <div class="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                <code class="text-green-400">![Placeholder](<%= baseUrl %>/600x400)</code>
-            </div>
+            <%- include('partials/code-block', { code: '![Placeholder](' + baseUrl + '/600x400)' }) %>
         </section>
 
         <!-- API -->
         <section id="api" class="mb-10">
             <h2 class="text-xl font-semibold mb-4">API Reference</h2>
             
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Endpoint</th>
-                            <th class="text-left py-3 px-4 font-medium">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /</code></td>
-                            <td class="py-3 px-4 text-gray-600">Homepage</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /docs</code></td>
-                            <td class="py-3 px-4 text-gray-600">Documentation (this page)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /health</code></td>
-                            <td class="py-3 px-4 text-gray-600">Health check with cache stats</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /:size</code></td>
-                            <td class="py-3 px-4 text-gray-600">Generate image with size only</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /:size/:format</code></td>
-                            <td class="py-3 px-4 text-gray-600">Generate image with format</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /:size/:bg/:color</code></td>
-                            <td class="py-3 px-4 text-gray-600">Generate image with colors</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>GET /:size/:bg/:color/:format</code></td>
-                            <td class="py-3 px-4 text-gray-600">Generate image with colors and format</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Endpoint', 'Description'],
+                rows: [
+                    [{ html: '<code>GET /</code>' }, 'Homepage'],
+                    [{ html: '<code>GET /docs</code>' }, 'Documentation (this page)'],
+                    [{ html: '<code>GET /health</code>' }, 'Health check with cache stats'],
+                    [{ html: '<code>GET /:size</code>' }, 'Generate image with size only'],
+                    [{ html: '<code>GET /:size/:format</code>' }, 'Generate image with format'],
+                    [{ html: '<code>GET /:size/:bg/:color</code>' }, 'Generate image with colors'],
+                    [{ html: '<code>GET /:size/:bg/:color/:format</code>' }, 'Generate image with colors and format']
+                ]
+            }) %>
 
             <h3 class="font-semibold mt-6 mb-3">Response Headers</h3>
             <ul class="text-sm text-gray-600 space-y-1">
@@ -449,58 +250,22 @@
             <h2 class="text-xl font-semibold mb-4">Self-Hosting</h2>
             
             <h3 class="font-semibold mt-6 mb-3">Installation</h3>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
-                <pre class="text-green-400">git clone https://github.com/birajrai/chittra.git
-cd chittra
-npm install
-npm start</pre>
-            </div>
+            <%- include('partials/code-block', { code: 'git clone https://github.com/birajrai/chittra.git\ncd chittra\nnpm install\nnpm start', multiline: true }) %>
 
             <h3 class="font-semibold mt-6 mb-3">Using Bun</h3>
-            <div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
-                <pre class="text-green-400">bun install
-bun start</pre>
-            </div>
+            <%- include('partials/code-block', { code: 'bun install\nbun start', multiline: true }) %>
 
             <h3 class="font-semibold mt-6 mb-3">Environment Variables</h3>
-            <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                <table class="w-full text-sm">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="text-left py-3 px-4 font-medium">Variable</th>
-                            <th class="text-left py-3 px-4 font-medium">Default</th>
-                            <th class="text-left py-3 px-4 font-medium">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr>
-                            <td class="py-3 px-4"><code>PORT</code></td>
-                            <td class="py-3 px-4">3000</td>
-                            <td class="py-3 px-4 text-gray-600">Server port</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>HOST</code></td>
-                            <td class="py-3 px-4">0.0.0.0</td>
-                            <td class="py-3 px-4 text-gray-600">Server host</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>CHITTRA_CACHE_TTL</code></td>
-                            <td class="py-3 px-4">3600000</td>
-                            <td class="py-3 px-4 text-gray-600">Cache TTL (ms)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>CHITTRA_CACHE_MAX_ITEMS</code></td>
-                            <td class="py-3 px-4">1000</td>
-                            <td class="py-3 px-4 text-gray-600">Max cached items</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 px-4"><code>CHITTRA_CONCURRENCY</code></td>
-                            <td class="py-3 px-4">4</td>
-                            <td class="py-3 px-4 text-gray-600">Max concurrent renders</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <%- include('partials/data-table', { 
+                headers: ['Variable', 'Default', 'Description'],
+                rows: [
+                    [{ html: '<code>PORT</code>' }, '3000', 'Server port'],
+                    [{ html: '<code>HOST</code>' }, '0.0.0.0', 'Server host'],
+                    [{ html: '<code>CHITTRA_CACHE_TTL</code>' }, '3600000', 'Cache TTL (ms)'],
+                    [{ html: '<code>CHITTRA_CACHE_MAX_ITEMS</code>' }, '1000', 'Max cached items'],
+                    [{ html: '<code>CHITTRA_CONCURRENCY</code>' }, '4', 'Max concurrent renders']
+                ]
+            }) %>
         </section>
 
         <%- include('partials/footer') %>

@@ -1,8 +1,14 @@
 <nav class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
     <a href="/" class="text-xl font-bold text-gray-900">Chittra</a>
     <div class="flex gap-4 text-sm">
-        <a href="/" class="<%= active === 'home' ? 'text-indigo-600 font-medium' : 'text-gray-600 hover:text-gray-900' %>">Home</a>
-        <a href="/docs" class="<%= active === 'docs' ? 'text-indigo-600 font-medium' : 'text-gray-600 hover:text-gray-900' %>">Docs</a>
-        <a href="https://github.com/birajrai/chittra" class="text-gray-600 hover:text-gray-900">GitHub</a>
+        <a href="/" class="<%= active === 'home' ? 'text-indigo-600 font-medium' : 'text-gray-600 hover:text-gray-900' %>">
+            <i class="fas fa-home mr-1"></i>Home
+        </a>
+        <a href="/docs" class="<%= active === 'docs' ? 'text-indigo-600 font-medium' : 'text-gray-600 hover:text-gray-900' %>">
+            <i class="fas fa-book mr-1"></i>Docs
+        </a>
+        <a href="https://github.com/birajrai/chittra" target="_blank" class="text-gray-600 hover:text-gray-900">
+            <i class="fab fa-github mr-1"></i>GitHub
+        </a>
     </div>
 </nav>

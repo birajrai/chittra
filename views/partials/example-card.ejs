@@ -1,0 +1,21 @@
+<% /* Example Card Partial - Parameters: baseUrl, title, imgSrc, displayPath, copyUrl (optional), imgHeight (optional), imgClass (optional), transparent (optional) */ %>
+<% const fullCopyUrl = typeof copyUrl !== 'undefined' ? copyUrl : baseUrl + displayPath; %>
+<% const heightClass = typeof imgHeight !== 'undefined' ? imgHeight : 'h-32'; %>
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div class="bg-gray-100 p-4 flex items-center justify-center <%= heightClass %>">
+        <% if (typeof transparent !== 'undefined' && transparent) { %>
+        <div class="rounded" style="background:repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% / 10px 10px">
+            <img src="<%= imgSrc %>" alt="<%= title %>" class="max-h-full rounded <%= typeof imgClass !== 'undefined' ? imgClass : '' %>">
+        </div>
+        <% } else { %>
+        <img src="<%= imgSrc %>" alt="<%= title %>" class="max-h-full rounded <%= typeof imgClass !== 'undefined' ? imgClass : '' %>">
+        <% } %>
+    </div>
+    <div class="p-3 border-t border-gray-100">
+        <p class="text-xs text-gray-500 mb-2"><%= title %></p>
+        <div class="flex items-center gap-2">
+            <code class="flex-1 text-xs bg-gray-50 px-2 py-1 rounded truncate"><%= displayPath %></code>
+            <button onclick="copy('<%= fullCopyUrl %>')" class="text-xs text-indigo-600 hover:text-indigo-700 font-medium">Copy</button>
+        </div>
+    </div>
+</div>

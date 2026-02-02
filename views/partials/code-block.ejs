@@ -1,0 +1,8 @@
+<% /* Code Block Partial - Parameters: code, multiline (optional) */ %>
+<div class="bg-gray-900 rounded-lg p-4 mb-4 overflow-x-auto">
+    <% if (typeof multiline !== 'undefined' && multiline) { %>
+    <pre class="text-green-400"><%= code %></pre>
+    <% } else { %>
+    <code class="text-green-400"><%= code %></code>
+    <% } %>
+</div>
