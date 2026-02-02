@@ -1,11 +1,11 @@
-const { LRUCache } = require('lru-cache');
-const { CACHE_TTL, CACHE_ITEMS } = require('./config');
+import { LRUCache } from 'lru-cache';
+import config from './config.js';
 
 class Cache {
     constructor() {
         this.cache = new LRUCache({
-            max: CACHE_ITEMS,
-            ttl: CACHE_TTL,
+            max: config.CACHE_ITEMS,
+            ttl: config.CACHE_TTL,
         });
     }
     get(key) {
@@ -25,4 +25,4 @@ class Cache {
     }
 }
 
-module.exports = new Cache();
+export default new Cache();
