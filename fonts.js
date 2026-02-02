@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     lato: 'https://fonts.googleapis.com/css2?family=Lato:wght@400;700',
     lora: 'https://fonts.googleapis.com/css2?family=Lora',
     montserrat: 'https://fonts.googleapis.com/css2?family=Montserrat',

@@ -1,7 +1,7 @@
-const sharp = require('sharp');
-const svgTemplate = require('./svg');
+import sharp from 'sharp';
+import svgTemplate from './svg.js';
 
-module.exports = async function renderRaster(opts, format) {
+export default async function renderRaster(opts, format) {
     const svg = svgTemplate(opts);
     return sharp(Buffer.from(svg)).toFormat(format).toBuffer();
-};
+}

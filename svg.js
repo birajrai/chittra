@@ -1,6 +1,6 @@
-const fonts = require('./fonts');
+import fonts from './fonts.js';
 
-module.exports = function svgTemplate({ width, height, bg, color, text, font }) {
+export default function svgTemplate({ width, height, bg, color, text, font }) {
     const fontUrl = fonts[font] || fonts.lato;
     const fontSize = Math.min(width, height) / 6;
 
@@ -21,4 +21,4 @@ module.exports = function svgTemplate({ width, height, bg, color, text, font }) 
   </text>
 </svg>
 `;
-};
+}

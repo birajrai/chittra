@@ -1,5 +1,52 @@
-// This file will be migrated to server.mjs for ES module compatibility.
-// Serve a preview HTML page at /
+import express from 'express';
+import { Sema } from 'async-sema';
+import fs from 'fs';
+import path from 'path';
+import crypto from 'crypto';
+import config from './config.js';
+import cache from './cache.js';
+import renderRaster from './render.js';
+import svgTemplate from './svg.js';
+import { parseSize, normalizeText } from './utils.js';
+
+let __dirname = path.dirname(new URL(import.meta.url).pathname);
+if (process.platform === 'win32' && __dirname.startsWith('/')) {
+    __dirname = __dirname.slice(1);
+}
+const TMP_DIR = path.join(__dirname, 'tmp');
+if (!fs.existsSync(TMP_DIR)) {
+    fs.mkdirSync(TMP_DIR);
+}
+
+function saveToTemp(data, ext) {
+    const filename = `${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
+    const filepath = path.join(TMP_DIR, filename);
+    fs.writeFileSync(filepath, data);
+    return filepath;
+}
+
+function cleanupTmpDir() {
+    const now = Date.now();
+    const cutoff = now - 24 * 60 * 60 * 1000;
+    fs.readdir(TMP_DIR, (err, files) => {
+        if (err) return;
+        files.forEach(file => {
+            const filePath = path.join(TMP_DIR, file);
+            fs.stat(filePath, (err, stats) => {
+                if (err) return;
+                if (stats.mtimeMs < cutoff) {
+                    fs.unlink(filePath, () => {});
+                }
+            });
+        });
+    });
+}
+cleanupTmpDir();
+setInterval(cleanupTmpDir, 24 * 60 * 60 * 1000);
+
+const app = express();
+const sema = new Sema(config.CONCURRENCY);
+
 app.get('/', (req, res) => {
     res.send(`
     <!DOCTYPE html>
@@ -62,74 +109,31 @@ app.get('/', (req, res) => {
     </html>
     `);
 });
-// Cleanup tmp directory every 24 hours
-function cleanupTmpDir() {
-    const now = Date.now();
-    const cutoff = now - 24 * 60 * 60 * 1000;
-    fs.readdir(TMP_DIR, (err, files) => {
-        if (err) return;
-        files.forEach(file => {
-            const filePath = path.join(TMP_DIR, file);
-            fs.stat(filePath, (err, stats) => {
-                if (err) return;
-                if (stats.mtimeMs < cutoff) {
-                    fs.unlink(filePath, () => {});
-                }
-            });
-        });
-    });
-}
 
-// Run cleanup on startup and every 24 hours
-cleanupTmpDir();
-setInterval(cleanupTmpDir, 24 * 60 * 60 * 1000);
+app.get('/:size/:bg?/:color?/:format?', async (req, res) => {
+    const key = req.originalUrl;
 
+    if (cache.has(key)) {
+        res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.send(cache.get(key));
+    }
 
-const express = require('express');
-const { Sema } = require('async-sema');
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+    try {
+        const { size, bg = '#eee', color = '#555', format } = req.params;
+        const { text, font = 'lato' } = req.query;
 
-const config = require('./config');
-const cache = require('./cache');
-const renderRaster = require('./render');
-const svgTemplate = require('./svg');
-const { parseSize, normalizeText } = require('./utils');
+        const { width, height } = parseSize(size);
+        const label = normalizeText(text, width, height);
 
-const TMP_DIR = path.join(__dirname, 'tmp');
-if (!fs.existsSync(TMP_DIR)) {
-    fs.mkdirSync(TMP_DIR);
-}
+        const options = {
+            width,
+            height,
+            bg: bg.toLowerCase(),
+            color: color.toLowerCase(),
+            text: label,
+            font: font.toLowerCase(),
+        };
 
-function saveToTemp(data, ext) {
-    const filename = `${Date.now()}-${crypto.randomBytes(6).toString('hex')}.${ext}`;
-    const filepath = path.join(TMP_DIR, filename);
-    fs.writeFileSync(filepath, data);
-    return filepath;
-}
-
-// Cleanup tmp directory every 24 hours
-function cleanupTmpDir() {
-    const now = Date.now();
-    const cutoff = now - 24 * 60 * 60 * 1000;
-    fs.readdir(TMP_DIR, (err, files) => {
-        if (err) return;
-        files.forEach(file => {
-            const filePath = path.join(TMP_DIR, file);
-            fs.stat(filePath, (err, stats) => {
-                if (err) return;
-                if (stats.mtimeMs < cutoff) {
-                    fs.unlink(filePath, () => {});
-                }
-            });
-        });
-    });
-}
-
-// Run cleanup on startup and every 24 hours
-cleanupTmpDir();
-setInterval(cleanupTmpDir, 24 * 60 * 60 * 1000);
         res.set('Cache-Control', 'public, max-age=31536000, immutable');
 
         // SVG FAST PATH
